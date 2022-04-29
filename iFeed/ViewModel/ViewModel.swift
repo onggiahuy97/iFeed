@@ -8,10 +8,11 @@
 import Foundation
 
 class ViewModel: ObservableObject {
-    @Published var appGroups: [AppGroup] = []
+    @Published var isShowingError = false
+    @Published var groups = [Group]()
     @Published var selectedContry: CountryCode = .us {
         didSet {
-            appGroups = []
+            groups = []
             reload()
         }
     }
@@ -21,12 +22,20 @@ class ViewModel: ObservableObject {
     }
     
     func reload() {
+        DispatchQueue.main.async {
+            self.isShowingError = false
+        }
         Task {
             do {
-                appGroups = try await Service.shared.fetchAppGroups(selectedContry)
-                print("Count: \(appGroups.count)")
+                let apps        = try await Service.shared.fetchAppGroups(selectedContry)
+                let musics      = try await Service.shared.fetchMusicGroup(selectedContry)
+                let books       = try await Service.shared.fetchBooksGroup(selectedContry)
+                let audibles    = try await Service.shared.fetchAudibleGroup(selectedContry)
+                let podcasts    = try await Service.shared.fetchPodcasts(selectedContry)
+                groups = apps + musics + books + audibles + podcasts
             } catch {
                 print(error.localizedDescription)
+                isShowingError = true
             }
         }
     }

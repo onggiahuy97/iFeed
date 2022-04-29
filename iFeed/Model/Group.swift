@@ -1,13 +1,13 @@
 //
-//  AppGroup.swift
+//  Group.swift
 //  iFeed
 //
-//  Created by Huy Ong on 4/16/22.
+//  Created by Huy Ong on 4/29/22.
 //
 
 import Foundation
 
-struct AppGroup: Decodable, Identifiable {
+struct Group: Decodable, Identifiable {
     let id = UUID()
     let feed: Feed
     
@@ -17,6 +17,12 @@ struct AppGroup: Decodable, Identifiable {
     }
     
     struct FeedResult: Decodable, Identifiable {
-        let id, name, artistName, artworkUrl100, url: String
+        let id, name, kind, artistName, artworkUrl100, url: String
+    }
+}
+
+extension Group {
+    enum Kind {
+        case book, other
     }
 }
