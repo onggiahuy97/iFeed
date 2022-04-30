@@ -10,12 +10,6 @@ import SwiftUI
 
 struct CellView: View {
     var cell: Group.FeedResult
-    var kind: Group.Kind
-    
-    init(cell: Group.FeedResult, kind: Group.Kind = .other)  {
-        self.cell = cell
-        self.kind = kind
-    }
     
     let width = UIScreen.main.bounds.width * 0.9
     
@@ -32,7 +26,7 @@ struct CellView: View {
                 } placeholder: {
                     ProgressView()
                 }
-                .frame(width: 55, height: kind == .other ? 55 : 80)
+                .frame(width: 60, height: 60)
                 .scaledToFill()
                 .cornerRadius(12)
                 .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 3)

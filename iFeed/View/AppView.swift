@@ -31,15 +31,7 @@ struct AppView: View {
             }
             .frame(maxWidth: .infinity)
             .navigationTitle(navigationTitleString)
-            .background{
-                ZStack{
-                    let colors: [Color] = [.blue.opacity(0.3),.blue.opacity(0.3), .red.opacity(0.3)]
-                    LinearGradient(colors: colors, startPoint: .topTrailing, endPoint: .bottomLeading)
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                }
-                .ignoresSafeArea()
-            }
+            .defaultBackground()
             .preferredColorScheme(.dark)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
