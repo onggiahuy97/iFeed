@@ -21,8 +21,7 @@ struct CellView: View {
     
     var body: some View {
         Button {
-            let baseString = "itms-apps://apple.com/app/id"
-            if let url = URL(string: baseString.appending(cell.id)) {
+            if let url = URL(string: cell.url), UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
             }
         } label: {
@@ -35,7 +34,7 @@ struct CellView: View {
                 }
                 .frame(width: 55, height: kind == .other ? 55 : 80)
                 .scaledToFill()
-                .cornerRadius(8)
+                .cornerRadius(12)
                 .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 3)
                 
                 Text(cell.name)

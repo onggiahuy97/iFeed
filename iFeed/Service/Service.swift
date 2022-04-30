@@ -13,28 +13,8 @@ struct Service {
     static let shared = Service()
     
     @MainActor
-    func fetchAppGroups(_ country: CountryCode) async throws -> [Group] {
-        return try await fetchGenericGroups(generateAppGroupURL(country))
-    }
-    
-    @MainActor
-    func fetchMusicGroup(_ country: CountryCode) async throws -> [Group] {
-        return try await fetchGenericGroups(generateMusicGroupURL(country))
-    }
-    
-    @MainActor
-    func fetchBooksGroup(_ country: CountryCode) async throws -> [Group] {
-        return try await fetchGenericGroups(generateBooksGroupURL(country))
-    }
-    
-    @MainActor
-    func fetchAudibleGroup(_ country: CountryCode) async throws -> [Group] {
-        return try await fetchGenericGroups(generateAudibleBooksURL(country))
-    }
-    
-    @MainActor
-    func fetchPodcasts(_ country: CountryCode) async throws -> [Group] {
-        return try await fetchGenericGroups(generatePodcassURL(country))
+    func fetchGroup(country: CountryCode, groupKind: GroupKind) async throws -> [Group] {
+        return try await fetchGenericGroups(groupKind.generateUrls(country))
     }
     
     private func fetchGenericGroups<T: Decodable>(_ urls: [URL]) async throws -> [T] {
@@ -54,32 +34,32 @@ struct Service {
         })
     }
     
-    private func generateAppGroupURL(_ country: CountryCode) -> [URL] {
-        let urlFree = "https://rss.applemarketingtools.com/api/v2/\(country.id)/apps/top-free/25/apps.json"
-        let urlPaid = "https://rss.applemarketingtools.com/api/v2/\(country.id)/apps/top-paid/25/apps.json"
-        return [URL(string: urlFree)!, URL(string: urlPaid)!]
-    }
-    
-    private func generateMusicGroupURL(_ country: CountryCode) -> [URL] {
-        let urlAlbums = "https://rss.applemarketingtools.com/api/v2/\(country.id)/music/most-played/25/albums.json"
-        let urlSongs = "https://rss.applemarketingtools.com/api/v2/\(country.id)/music/most-played/25/songs.json"
-        return [URL(string: urlAlbums)!, URL(string: urlSongs)!]
-    }
-    
-    private func generateBooksGroupURL(_ country: CountryCode) -> [URL] {
-        let urlAlbums = "https://rss.applemarketingtools.com/api/v2/\(country.id)/books/top-free/25/books.json"
-        let urlSongs = "https://rss.applemarketingtools.com/api/v2/\(country.id)/books/top-paid/25/books.json"
-        return [URL(string: urlAlbums)!, URL(string: urlSongs)!]
-    }
-    
-    private func generateAudibleBooksURL(_ country: CountryCode) -> [URL] {
-        let url = "https://rss.applemarketingtools.com/api/v2/\(country.id)/audio-books/top/25/audio-books.json"
-        return [URL(string: url)!]
-    }
-    
-    private func generatePodcassURL(_ country: CountryCode) -> [URL] {
-        let urlPodcastEps = "https://rss.applemarketingtools.com/api/v2/\(country.id)/podcasts/top/25/podcast-episodes.json"
-        let urlPodcast = "https://rss.applemarketingtools.com/api/v2/\(country.id)/podcasts/top/25/podcasts.json"
-        return [URL(string: urlPodcastEps)!, URL(string: urlPodcast)!]
+    enum GroupKind {
+        case app, music, book, podcast, audible
+        
+        func generateUrls(_ country: CountryCode) -> [URL] {
+            var base1 = "https://rss.applemarketingtools.com/api/v2/"
+            var base2 = "https://rss.applemarketingtools.com/api/v2/"
+            base1.append(country.id)
+            base2.append(country.id)
+            switch self {
+            case .app:
+                base1.append("/apps/top-free/25/apps.json")
+                base2.append("/apps/top-paid/25/apps.json")
+            case .music:
+                base1.append("/music/most-played/25/albums.json")
+                base2.append("/music/most-played/25/songs.json")
+            case .book:
+                base1.append("/books/top-free/25/books.json")
+                base2.append("/books/top-paid/25/books.json")
+            case .audible:
+                base1.append("/audio-books/top/25/audio-books.json")
+                return [URL(string: base1)!]
+            case .podcast:
+                base1.append("/podcasts/top/25/podcast-episodes.json")
+                base2.append("/podcasts/top/25/podcasts.json")
+            }
+            return [URL(string: base1)!, URL(string: base2)!]
+        }
     }
 }

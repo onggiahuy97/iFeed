@@ -12,30 +12,40 @@ struct GroupView: View {
     
     var body: some View {
         ForEach(groups) { group in
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 15) {
                 NavigationLink(destination: FullCellDetailView(group: group)) {
                     HStack {
-                        let kind = group.feed.results.first?.kind == "books" ? "Books" : ""
-                        Text("\(group.feed.title) \(kind)")
+                        Image(systemName: group.groupTypeIconName)
+                            .imageScale(.large)
+                        Text(group.feed.title)
                             .font(.title)
                         Spacer()
-                        Image(systemName: "list.bullet")
                     }
+                    .padding(8)
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(12)
                 }
                 .buttonStyle(.plain)
+                .padding(.horizontal)
+                
                 ScrollView(.horizontal) {
-                    let rows: [GridItem] = Array.init(repeating: GridItem(), count: 3)
-                    let widthScreen = UIScreen.main.bounds.width * 0.8
-                    LazyHGrid(rows: rows, alignment: .top, spacing: 12) {
-                        ForEach(group.feed.results) { app in
-                            CellView(cell: app)
-                                .frame(width: widthScreen)
+                    HStack {
+                        Spacer()
+                            .frame(width: 15)
+                        ScrollView(.horizontal) {
+                            let rows: [GridItem] = Array.init(repeating: GridItem(), count: 3)
+                            let widthScreen = UIScreen.main.bounds.width * 0.7
+                            LazyHGrid(rows: rows, alignment: .top, spacing: 15) {
+                                ForEach(group.feed.results) { app in
+                                    CellView(cell: app)
+                                        .frame(width: widthScreen)
+                                }
+                            }
                         }
                     }
-                    .frame(height: 200)
                 }
+                .frame(height: 220)
             }
         }
-        .padding()
     }
 }

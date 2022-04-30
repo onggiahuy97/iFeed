@@ -45,6 +45,7 @@ struct AppView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: pickedCountryView, isActive: $showSelectedCountry) {
                         Image(systemName: "line.3.horizontal.decrease.circle")
+                            .foregroundColor(.white)
                     }
                     
                 }

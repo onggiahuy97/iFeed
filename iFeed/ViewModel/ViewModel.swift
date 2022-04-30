@@ -27,11 +27,11 @@ class ViewModel: ObservableObject {
         }
         Task {
             do {
-                let apps        = try await Service.shared.fetchAppGroups(selectedContry)
-                let musics      = try await Service.shared.fetchMusicGroup(selectedContry)
-                let books       = try await Service.shared.fetchBooksGroup(selectedContry)
-                let audibles    = try await Service.shared.fetchAudibleGroup(selectedContry)
-                let podcasts    = try await Service.shared.fetchPodcasts(selectedContry)
+                let apps = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .app)
+                let musics = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .music)
+                let books = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .book)
+                let audibles = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .audible)
+                let podcasts = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .podcast)
                 groups = apps + musics + books + audibles + podcasts
             } catch {
                 print(error.localizedDescription)
