@@ -19,6 +19,7 @@ struct GroupView: View {
                             .imageScale(.large)
                         Text(group.feed.title)
                             .font(.title)
+                            .lineLimit(1)
                         Spacer()
                     }
                     .padding(8)
