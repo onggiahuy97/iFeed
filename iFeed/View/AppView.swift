@@ -32,7 +32,6 @@ struct AppView: View {
             .frame(maxWidth: .infinity)
             .navigationTitle(navigationTitleString)
             .defaultBackground()
-            .preferredColorScheme(.dark)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: pickedCountryView, isActive: $showSelectedCountry) {

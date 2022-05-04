@@ -23,7 +23,21 @@ struct Group: Decodable, Identifiable {
 
 extension Group {
     enum Kind {
-        case book, other
+        case books, apps, audio, music, podcasts, other
+    }
+    
+    var groupType: Kind {
+        if feed.id.contains("apps") {
+            return .apps
+        } else if feed.id.contains("audio") {
+            return .audio
+        } else if feed.id.contains("books") {
+            return .books
+        } else if feed.id.contains("music") {
+            return .music
+        } else {
+            return .podcasts
+        }
     }
     
     var groupTypeIconName: String {

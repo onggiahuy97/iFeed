@@ -13,6 +13,8 @@ struct GroupView: View {
     var body: some View {
         ForEach(groups) { group in
             VStack(alignment: .leading, spacing: 15) {
+                
+                // Title View
                 NavigationLink(destination: FullCellDetailView(group: group)) {
                     HStack {
                         Image(systemName: group.groupTypeIconName)
@@ -29,6 +31,7 @@ struct GroupView: View {
                 .buttonStyle(.plain)
                 .padding(.horizontal)
                 
+                // Collection View
                 ScrollView(.horizontal) {
                     HStack {
                         Spacer()

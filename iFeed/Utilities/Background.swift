@@ -19,5 +19,6 @@ extension View {
                 }
                 .ignoresSafeArea()
             }
+            .preferredColorScheme(.dark)
     }
 }

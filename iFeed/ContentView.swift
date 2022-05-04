@@ -8,8 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var selectedTab: SelectedTab = .search
+    
+    enum SelectedTab {
+        case home, search
+    }
+    
     var body: some View {
-        AppView()
+        TabView(selection: $selectedTab) {
+            AppView()
+                .tabItem {
+                    Label("Home", systemImage: "list.bullet.rectangle.portrait")
+                }
+                .tag(SelectedTab.home)
+            
+            SearchView()
+                .tabItem {
+                    Label("Search", systemImage: "magnifyingglass")
+                }
+                .tag(SelectedTab.search)
+        }
     }
 }
 

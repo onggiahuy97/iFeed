@@ -13,6 +13,13 @@ struct Service {
     static let shared = Service()
     
     @MainActor
+    func fetchSearch(_ searchTerm: String, completion: @escaping ((SearchResult) -> Void)) async throws {
+        let urlString = "https://itunes.apple.com/search?term=\(searchTerm)&limit=25"
+        guard let url = URL(string: urlString) else { return }
+        try await fetch(url: url) { completion($0) }
+    }
+    
+    @MainActor
     func fetchGroup(country: CountryCode, groupKind: GroupKind) async throws -> [Group] {
         return try await fetchGenericGroups(groupKind.generateUrls(country))
     }
@@ -33,7 +40,9 @@ struct Service {
             completion(jsonData)
         })
     }
-    
+}
+
+extension Service {
     enum GroupKind {
         case app, music, book, podcast, audible
         
