@@ -18,6 +18,7 @@ extension View {
                         .fill(.ultraThinMaterial)
                 }
                 .ignoresSafeArea()
+                
             }
             .preferredColorScheme(.dark)
     }

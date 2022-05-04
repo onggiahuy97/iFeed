@@ -20,6 +20,7 @@
 		3EA1D223281C676300D24CAC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA1D222281C676300D24CAC /* Group.swift */; };
 		3EA1D228281CD16400D24CAC /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA1D227281CD16400D24CAC /* Background.swift */; };
 		3EBB7E66280C87F20084F52E /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB7E65280C87F20084F52E /* ViewModel.swift */; };
+		3EBEF8FE2823460E002720E3 /* SearchViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEF8FD2823460E002720E3 /* SearchViewCell.swift */; };
 		3EE863792820A39C00CAFF9D /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE863782820A39C00CAFF9D /* SearchResult.swift */; };
 		3EE8637B2820A42000CAFF9D /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE8637A2820A42000CAFF9D /* SearchView.swift */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,7 @@
 		3EA1D222281C676300D24CAC /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		3EA1D227281CD16400D24CAC /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		3EBB7E65280C87F20084F52E /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		3EBEF8FD2823460E002720E3 /* SearchViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewCell.swift; sourceTree = "<group>"; };
 		3EE863782820A39C00CAFF9D /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		3EE8637A2820A42000CAFF9D /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +124,7 @@
 				3EA1D21E281C633700D24CAC /* GroupView.swift */,
 				3EA1D220281C63FE00D24CAC /* FullCellDetailView.swift */,
 				3EE8637A2820A42000CAFF9D /* SearchView.swift */,
+				3EBEF8FD2823460E002720E3 /* SearchViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				3EA1D223281C676300D24CAC /* Group.swift in Sources */,
 				3EA1D1FC28120B0400D24CAC /* CountryCode.swift in Sources */,
 				3E3CF202280B8E8E0069F999 /* Service.swift in Sources */,
+				3EBEF8FE2823460E002720E3 /* SearchViewCell.swift in Sources */,
 				3EE8637B2820A42000CAFF9D /* SearchView.swift in Sources */,
 				3E3CF208280B90FD0069F999 /* AppView.swift in Sources */,
 				3EBB7E66280C87F20084F52E /* ViewModel.swift in Sources */,

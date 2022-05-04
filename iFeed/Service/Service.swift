@@ -14,7 +14,7 @@ struct Service {
     
     @MainActor
     func fetchSearch(_ searchTerm: String, completion: @escaping ((SearchResult) -> Void)) async throws {
-        let urlString = "https://itunes.apple.com/search?term=\(searchTerm)&limit=25"
+        let urlString = "https://itunes.apple.com/search?term=\(searchTerm)&entity=software"
         guard let url = URL(string: urlString) else { return }
         try await fetch(url: url) { completion($0) }
     }

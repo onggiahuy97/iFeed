@@ -9,22 +9,28 @@ import SwiftUI
 
 struct SearchView: View {
     @EnvironmentObject var viewModel: ViewModel
-    
+    @State private var errorMessage = "There is nothing here"
     var body: some View {
-        VStack {
-            SearchBarView(searchResult: $viewModel.searchResult)
-            if let searchResult = viewModel.searchResult {
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        ForEach(searchResult.results) {
-                            Text($0.trackName)
+        ZStack(alignment: .top) {
+            VStack {
+                Spacer().frame(height: 50)
+                if let searchResult = viewModel.searchResult {
+                    ScrollView {
+                        VStack(alignment: .leading) {
+                            ForEach(searchResult.results) { result in
+                                SearchCellView(cell: result)
+                            }
                         }
                     }
+                } else {
+                    Text(errorMessage)
+                    Spacer()
                 }
-            } else {
-                Spacer()
             }
+            SearchBarView(searchResult: $viewModel.searchResult)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal)
         .defaultBackground()
     }
 }
