@@ -13,9 +13,11 @@ struct Service {
     static let shared = Service()
     
     @MainActor
-    func fetchSearch(_ searchTerm: String, completion: @escaping ((SearchResult) -> Void)) async throws {
-        let urlString = "https://itunes.apple.com/search?term=\(searchTerm)&entity=software"
+    func fetchSearch(_ searchTerm: String, _ searchType: SearchResult.SearchType, completion: @escaping ((SearchResult) -> Void)) async throws {
+        let entity = searchType == .Music ? "" : "&entity=\(searchType.toTerm)"
+        let urlString = "https://itunes.apple.com/search?term=\(searchTerm)" + entity
         guard let url = URL(string: urlString) else { return }
+        print(url.absoluteString)
         try await fetch(url: url) { completion($0) }
     }
     

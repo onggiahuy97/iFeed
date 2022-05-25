@@ -6,11 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
 
 class ViewModel: ObservableObject {
     @Published var isShowingError = false
     @Published var groups = [Group]()
-    @Published var searchResult: SearchResult? 
+    @Published var searchResult: SearchResult?
+    @Published var searchText = ""
+    @Published var searchType: SearchResult.SearchType = .App
     @Published var selectedContry: CountryCode = .us {
         didSet { reload() }
     }
@@ -36,6 +39,28 @@ class ViewModel: ObservableObject {
                 groups += audibles
                 let podcasts = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .podcast)
                 groups += podcasts
+            } catch {
+                print(error.localizedDescription)
+                isShowingError = true
+            }
+        }
+    }
+    
+    func performSearch() {
+        DispatchQueue.main.async {
+            self.isShowingError = false
+        }
+        
+        Task {
+            do {
+                guard !searchText.isEmpty else { return }
+                let fixedText = searchText.replacingOccurrences(of: " ", with: "").lowercased()
+                try await Service.shared.fetchSearch(fixedText, searchType) { searchResult in
+                    print(searchResult.resultCount)
+                    withAnimation {
+                        self.searchResult = searchResult
+                    }
+                }
             } catch {
                 print(error.localizedDescription)
                 isShowingError = true

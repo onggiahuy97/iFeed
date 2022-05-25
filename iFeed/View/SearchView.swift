@@ -6,14 +6,17 @@
 //
 
 import SwiftUI
+import Combine
 
 struct SearchView: View {
     @EnvironmentObject var viewModel: ViewModel
-    @State private var errorMessage = "There is nothing here"
+    @State private var errorMessage = "No items to display"
+    
     var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                Spacer().frame(height: 50)
+                SearchBarView()
+                PickSearchType
                 if let searchResult = viewModel.searchResult {
                     ScrollView {
                         VStack(alignment: .leading) {
@@ -27,16 +30,30 @@ struct SearchView: View {
                     Spacer()
                 }
             }
-            SearchBarView(searchResult: $viewModel.searchResult)
+            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal)
         .defaultBackground()
     }
+    
+    var PickSearchType: some View {
+        Picker("", selection: $viewModel.searchType) {
+            ForEach(SearchResult.SearchType.allCases) { type in
+                Text(type.rawValue)
+                    .tag(type)
+            }
+        }
+        .pickerStyle(.segmented)
+        .onChange(of: viewModel.searchType) { newValue in
+            viewModel.searchType = newValue
+            viewModel.performSearch()
+        }
+    }
 }
-
+            
 struct SearchBarView: UIViewRepresentable {
-    @Binding var searchResult: SearchResult?
+    @EnvironmentObject var viewModel: ViewModel
     
     func makeUIView(context: Context) -> some UISearchBar {
         let searchBar = UISearchBar(frame: .zero)
@@ -50,14 +67,14 @@ struct SearchBarView: UIViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(searchResult: $searchResult)
+        Coordinator(viewModel)
     }
     
     class Coordinator: NSObject, UISearchBarDelegate {
-        @Binding var searchResult: SearchResult?
+        let viewModel: ViewModel
         
-        init(searchResult: Binding<SearchResult?>) {
-            _searchResult = searchResult
+        init(_ viewModel: ViewModel) {
+            self.viewModel = viewModel
         }
         
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -67,20 +84,8 @@ struct SearchBarView: UIViewRepresentable {
         
         @objc
         private func search(_ searchBar: UISearchBar) {
-            Task {
-                do {
-                    guard let text = searchBar.text, !text.isEmpty else { return }
-                    let fixedText = text.replacingOccurrences(of: " ", with: "").lowercased()
-                    try await Service.shared.fetchSearch(fixedText) { searchResult in
-                        print(searchResult.resultCount)
-                        withAnimation {
-                            self.searchResult = searchResult
-                        }
-                    }
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }
+            viewModel.searchText = searchBar.text ?? ""
+            viewModel.performSearch()
         }
     }
     

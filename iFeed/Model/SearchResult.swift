@@ -12,14 +12,13 @@ struct SearchResult: Decodable {
     let results: [Result]
     
     struct Result: Decodable, Identifiable {
-        var id: Int { trackId }
-        let trackId: Int
-        let trackViewUrl: String
-        let trackName: String
-        let primaryGenreName: String
+        var id: Int { trackId ?? UUID().hashValue }
+        let trackId: Int?
+        let trackViewUrl: String?
+        let trackName: String?
         var averageUserRating: Float?
         var screenshotUrls: [String]?
-        let artworkUrl100: String // app icon
+        let artworkUrl100: String? // app icon
         var formattedPrice: String?
         var description: String?
         var releaseNotes: String?
@@ -28,4 +27,20 @@ struct SearchResult: Decodable {
     }
 }
 
+extension SearchResult {
+    enum SearchType: String, CaseIterable, Identifiable {
+        case App, Music, Movie, EBook
+        
+        var id: String { toTerm }
+        
+        var toTerm: String {
+            switch self {
+            case .App: return "software"
+            case .Music: return ""
+            case .Movie: return self.rawValue.lowercased()
+            case .EBook: return self.rawValue.lowercased()
+            }
+        }
+    }
+}
 
