@@ -49,6 +49,7 @@ class ViewModel: ObservableObject {
     func performSearch() {
         DispatchQueue.main.async {
             self.isShowingError = false
+            self.searchResult = nil
         }
         
         Task {

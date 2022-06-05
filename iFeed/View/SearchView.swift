@@ -17,7 +17,7 @@ struct SearchView: View {
             VStack {
                 SearchBarView()
                 PickSearchType
-                if let searchResult = viewModel.searchResult {
+                if let searchResult = viewModel.searchResult  {
                     ScrollView {
                         VStack(alignment: .leading) {
                             ForEach(searchResult.results) { result in
@@ -26,6 +26,7 @@ struct SearchView: View {
                         }
                     }
                 } else {
+                    Spacer()
                     Text(errorMessage)
                     Spacer()
                 }
@@ -51,7 +52,7 @@ struct SearchView: View {
         }
     }
 }
-            
+
 struct SearchBarView: UIViewRepresentable {
     @EnvironmentObject var viewModel: ViewModel
     
