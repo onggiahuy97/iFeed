@@ -27,23 +27,41 @@ class ViewModel: ObservableObject {
             self.groups = []
             self.isShowingError = false
         }
+        //        Task {
+        //            do {
+        //                let apps = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .app)
+        //                groups += apps
+        //                let musics = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .music)
+        //                groups += musics
+        //                let books = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .book)
+        //                groups += books
+        //                let audibles = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .audible)
+        //                groups += audibles
+        //                let podcasts = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .podcast)
+        //                groups += podcasts
+        //            } catch {
+        //                print(error.localizedDescription)
+        //                isShowingError = true
+        //            }
+        //        }
         Task {
+            async let apps = Service.shared.fetchGroup(country: selectedContry, groupKind: .app)
+            async let music = Service.shared.fetchGroup(country: selectedContry, groupKind: .music)
+            async let books = Service.shared.fetchGroup(country: selectedContry, groupKind: .book)
+            async let audibles = Service.shared.fetchGroup(country: selectedContry, groupKind: .audible)
+            async let podcasts = Service.shared.fetchGroup(country: selectedContry, groupKind: .podcast)
             do {
-                let apps = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .app)
-                groups += apps
-                let musics = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .music)
-                groups += musics
-                let books = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .book)
-                groups += books
-                let audibles = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .audible)
-                groups += audibles
-                let podcasts = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .podcast)
-                groups += podcasts
+                try await groups.append(contentsOf: apps + music + books + audibles + podcasts)
             } catch {
                 print(error.localizedDescription)
-                isShowingError = true
+                DispatchQueue.main.async {
+                    self.isShowingError = true
+                }
             }
         }
+//        DispatchQueue.main.async {
+//            await groups = apps + music + books + audibles + podcasts
+//        }
     }
     
     func performSearch() {
