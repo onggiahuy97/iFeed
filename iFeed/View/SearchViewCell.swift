@@ -8,15 +8,19 @@
 import SwiftUI
 
 struct SearchCellView: View {
+    
+    @State private var showDetailView = false
+    
     var cell: SearchResult.Result
     
     let width = UIScreen.main.bounds.width * 0.9
     
     var body: some View {
         Button {
-            if let url = URL(string: cell.trackViewUrl ?? ""), UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            }
+//            if let url = URL(string: cell.trackViewUrl ?? ""), UIApplication.shared.canOpenURL(url) {
+//                UIApplication.shared.open(url)
+//            }
+            showDetailView.toggle()
         } label: {
             HStack(alignment: .center) {
                 AsyncImage(url: URL(string: cell.artworkUrl100 ?? "")) { image in
@@ -35,5 +39,8 @@ struct SearchCellView: View {
             }
         }
         .buttonStyle(.plain)
+        .sheet(isPresented: $showDetailView) {
+            AppDetailView(searchCell: cell)
+        }
     }
 }

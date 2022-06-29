@@ -23,6 +23,7 @@ struct SearchView: View {
                             ForEach(searchResult.results) { result in
                                 SearchCellView(cell: result)
                             }
+                            
                         }
                     }
                 } else {
@@ -83,10 +84,13 @@ struct SearchBarView: UIViewRepresentable {
             perform(#selector(search), with: searchBar, afterDelay: 0.75)
         }
         
+        
+        
         @objc
         private func search(_ searchBar: UISearchBar) {
             viewModel.searchText = searchBar.text ?? ""
             viewModel.performSearch()
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
     }
     

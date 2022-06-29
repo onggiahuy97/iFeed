@@ -8,7 +8,7 @@
 import Foundation
 
 struct Group: Decodable, Identifiable {
-    let id = UUID()
+    var id: String { feed.id }
     let feed: Feed
     
     struct Feed: Decodable {
@@ -17,7 +17,7 @@ struct Group: Decodable, Identifiable {
     }
     
     struct FeedResult: Decodable, Identifiable {
-        let id, name, kind, artistName, artworkUrl100, url: String
+        let id, name, kind, artistName, artworkUrl100, url: String?
     }
     
 }

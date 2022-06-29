@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var selectedTab: SelectedTab = .search
+    @State private var selectedTab: SelectedTab = .home
     
     enum SelectedTab {
         case home, search

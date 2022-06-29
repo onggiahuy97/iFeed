@@ -41,7 +41,9 @@ class ViewModel: ObservableObject {
                 addGroupInMainThread(podcasts)
             } catch {
                 print(error.localizedDescription)
-                isShowingError = true
+                DispatchQueue.main.async {
+                    self.isShowingError = true
+                }
             }
         }
         //        Task {
