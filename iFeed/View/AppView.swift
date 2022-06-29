@@ -11,7 +11,7 @@ struct AppView: View {
     
     @EnvironmentObject var viewModel: ViewModel
     
-    @State private var showSelectedCountry = false
+//    @State private var showSelectedCountry = false
     @State private var searchText = ""
     
     var navigationTitleString: String {
@@ -19,7 +19,7 @@ struct AppView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 if viewModel.groups.isEmpty {
                     VStack(spacing: 12) {
@@ -34,11 +34,15 @@ struct AppView: View {
             .defaultBackground()
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: pickedCountryView, isActive: $showSelectedCountry) {
+//                    NavigationLink(destination: pickedCountryView, isActive: $showSelectedCountry) {
+//                        Image(systemName: "line.3.horizontal.decrease.circle")
+//                            .foregroundColor(.white)
+//                    }
+                    
+                    NavigationLink(destination: pickedCountryView) {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                             .foregroundColor(.white)
                     }
-                    
                 }
             }
         }
