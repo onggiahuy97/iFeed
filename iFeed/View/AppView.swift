@@ -12,7 +12,10 @@ struct AppView: View {
     @EnvironmentObject var viewModel: ViewModel
     
 //    @State private var showSelectedCountry = false
+    @Environment(\.presentationMode) var pm
+    
     @State private var searchText = ""
+    @State private var showPickingCountry = false
     
     var navigationTitleString: String {
         "\(viewModel.selectedContry.flag) \(viewModel.selectedContry.country)"
@@ -39,9 +42,19 @@ struct AppView: View {
 //                            .foregroundColor(.white)
 //                    }
                     
-                    NavigationLink(destination: pickedCountryView) {
+//                    NavigationLink(destination: pickedCountryView) {
+//                        Image(systemName: "line.3.horizontal.decrease.circle")
+//                            .foregroundColor(.white)
+//                    }
+                    
+                    Button {
+                        showPickingCountry.toggle()
+                    } label: {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                             .foregroundColor(.white)
+                    }
+                    .sheet(isPresented: $showPickingCountry) {
+                        pickedCountryView
                     }
                 }
             }
@@ -49,36 +62,43 @@ struct AppView: View {
     }
     
     var pickedCountryView: some View {
-        List(CountryCode.all) { cc in
-            Button {
-                viewModel.selectedContry = cc
-                showSelectedCountry.toggle()
-            } label: {
-                HStack {
-                    Text(cc.flag)
-                    Text(cc.country)
-                    Spacer()
-                    Image(systemName: "checkmark")
-                        .opacity(cc.id == viewModel.selectedContry.id ? 1.0 : 0.0)
-                }
-            }
-        }
-        .navigationTitle("Pick a country")
-        .searchable(text: $searchText) {
-            ForEach(CountryCode.all.filter { $0.country.contains(searchText) }) { cc in
+        NavigationView {
+            List(CountryCode.all) { cc in
                 Button {
                     viewModel.selectedContry = cc
-                    showSelectedCountry.toggle()
+                    //                showSelectedCountry.toggle()
                 } label: {
                     HStack {
-                        Text("\(cc.flag) \(cc.country)")
+                        Text(cc.flag)
+                        Text(cc.country)
                         Spacer()
                         Image(systemName: "checkmark")
                             .opacity(cc.id == viewModel.selectedContry.id ? 1.0 : 0.0)
                     }
                 }
             }
+            .navigationTitle("Pick a country")
+            .toolbar {
+                ToolbarItem {
+                    
+                }
+            }
+            .searchable(text: $searchText) {
+                ForEach(CountryCode.all.filter { $0.country.contains(searchText) }) { cc in
+                    Button {
+                        viewModel.selectedContry = cc
+                        pm.wrappedValue.dismiss()
+                    } label: {
+                        HStack {
+                            Text("\(cc.flag) \(cc.country)")
+                            Spacer()
+                            Image(systemName: "checkmark")
+                                .opacity(cc.id == viewModel.selectedContry.id ? 1.0 : 0.0)
+                        }
+                    }
+                }
+            }
+            .buttonStyle(.plain)
         }
-        .buttonStyle(.plain)
     }
 }

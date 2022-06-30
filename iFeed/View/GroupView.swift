@@ -10,6 +10,9 @@ import SwiftUI
 struct GroupView: View {
     let groups: [Group]
     
+    var userIdiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+//    var isPortrait: Bool { UIDevice.current.orientation.isPortrait }
+    
     var body: some View {
         ForEach(groups) { group in
             VStack(alignment: .leading, spacing: 15) {
@@ -38,7 +41,8 @@ struct GroupView: View {
                             .frame(width: 15)
                         ScrollView(.horizontal) {
                             let rows: [GridItem] = Array.init(repeating: GridItem(), count: 3)
-                            let widthScreen = UIScreen.main.bounds.width * 0.7
+                            let widthScreen = UIScreen.main.bounds.width * (userIdiom == .phone ? 0.7 : 0.35)
+                            
                             LazyHGrid(rows: rows, alignment: .top, spacing: 15) {
                                 ForEach(group.feed.results) { app in
                                     CellView(cell: app)

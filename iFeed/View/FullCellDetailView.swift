@@ -10,16 +10,24 @@ import SwiftUI
 struct FullCellDetailView: View {
     let group: Group
     
+    var userIdiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    
     var body: some View {
         ScrollView {
             if group.feed.results.isEmpty {
                 Text("The list is empty")
             }
             
-            VStack(alignment: .leading, spacing: 15) {
+//            VStack(alignment: .leading, spacing: 15) {
+//                ForEach(group.feed.results) { res in
+//                    CellView(cell: res)
+//                }
+            let columns = userIdiom == .phone ? [GridItem()] : [GridItem(), GridItem()]
+            LazyVGrid(columns: columns) {
                 ForEach(group.feed.results) { res in
                     CellView(cell: res)
                 }
+                //                }
             }
             .padding(.horizontal)
             
