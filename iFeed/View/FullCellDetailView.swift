@@ -11,6 +11,7 @@ struct FullCellDetailView: View {
     let group: Group
     
     var userIdiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    var countColumns: Int { userIdiom == .phone ? 1 : 2 }
     
     var body: some View {
         ScrollView {
@@ -22,7 +23,7 @@ struct FullCellDetailView: View {
 //                ForEach(group.feed.results) { res in
 //                    CellView(cell: res)
 //                }
-            let columns = userIdiom == .phone ? [GridItem()] : [GridItem(), GridItem()]
+            let columns = Array(repeating: GridItem(), count: countColumns)
             LazyVGrid(columns: columns) {
                 ForEach(group.feed.results) { res in
                     CellView(cell: res)
