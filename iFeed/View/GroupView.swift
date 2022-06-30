@@ -26,6 +26,9 @@ struct GroupView: View {
                             .font(.title)
                             .lineLimit(1)
                         Spacer()
+                        Text("See All")
+                            .padding(.trailing, 5)
+                            .font(.footnote)
                     }
                     .padding(8)
                     .background(.ultraThinMaterial)
@@ -41,7 +44,7 @@ struct GroupView: View {
                             .frame(width: 15)
                         ScrollView(.horizontal) {
                             let rows: [GridItem] = Array.init(repeating: GridItem(), count: 3)
-                            let widthScreen = UIScreen.main.bounds.width * (userIdiom == .phone ? 0.7 : 0.35)
+                            let widthScreen = UIScreen.main.bounds.width * (userIdiom == .phone ? 0.7 : 0.4)
                             
                             LazyHGrid(rows: rows, alignment: .top, spacing: 15) {
                                 ForEach(group.feed.results) { app in
