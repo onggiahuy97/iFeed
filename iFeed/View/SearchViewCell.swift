@@ -35,6 +35,7 @@ struct SearchCellView: View {
                 .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 3)
                 
                 Text(cell.trackName ?? "")
+                    .lineLimit(3)
                 Spacer()
             }
         }

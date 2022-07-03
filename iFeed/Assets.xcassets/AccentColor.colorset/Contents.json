@@ -2,13 +2,6 @@
   "colors" : [
     {
       "color" : {
-        "platform" : "universal",
-        "reference" : "labelColor"
-      },
-      "idiom" : "universal"
-    },
-    {
-      "color" : {
         "color-space" : "srgb",
         "components" : {
           "alpha" : "1.000",

@@ -26,6 +26,11 @@ struct Service {
         return try await fetchGenericGroups(groupKind.generateUrls(country))
     }
     
+    func fetchAppDetail(appId: String, completion: @escaping ((SearchResult) -> Void)) async throws {
+        guard let url = URL(string: "https://itunes.apple.com/lookup?id=\(appId)") else { return }
+        try await fetch(url: url, completion: completion)
+    }
+    
     private func fetchGenericGroups<T: Decodable>(_ urls: [URL]) async throws -> [T] {
         var tGroup = [T]()
         for url in urls {
