@@ -18,6 +18,7 @@ struct Group: Decodable, Identifiable {
     
     struct FeedResult: Decodable, Identifiable {
         let id, name, kind, artistName, artworkUrl100, url: String?
+        let screenshotUrls: [String]?
     }
     
 }
