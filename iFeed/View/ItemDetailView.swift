@@ -1,46 +1,26 @@
 //
-//  AppDetailView.swift
+//  ItemDetailView.swift
 //  iFeed
 //
-//  Created by Huy Ong on 6/28/22.
+//  Created by Huy Ong on 7/12/22.
 //
 
 import SwiftUI
 
-struct AppDetailView: View {
-    var searchCell: SearchResult.Result?
-    var groupCell: Group.FeedResult?
+struct ItemDetailView: View {
+    let itemID: String
     
-    @State private var screenshotUrls: [String]?
+    @State private var item: SearchResult.Result?
     
-    init(searchCell: SearchResult.Result? = nil, groupCell: Group.FeedResult? = nil, screenshotUrls: [String]? = nil) {
-        self.searchCell = searchCell
-        self.groupCell = groupCell
-        self.screenshotUrls = screenshotUrls
-        
-        if let groupCell = groupCell {
-            loadData(appId: groupCell.id ?? "")
-        }
+    init(itemID: String) {
+        self.itemID = itemID
     }
     
     var body: some View {
-        if let groupCell = groupCell {
-            appDetailView(groupCell: groupCell)
-            .onAppear {
-                loadData(appId: groupCell.id ?? "")
-            }
-        } else if let searchCell = searchCell {
-            
-        } else {
-            ProgressView("Failed to fetch app")
-        }
-    }
-    
-    func appDetailView(groupCell: Group.FeedResult) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 15) {
                 HStack(alignment: .top, spacing: 10) {
-                    AsyncImage(url: URL(string: groupCell.artworkUrl100 ?? "")) { image in
+                    AsyncImage(url: URL(string: item?.artworkUrl100 ?? "")) { image in
                         image
                             .resizable()
                     } placeholder: {
@@ -52,15 +32,15 @@ struct AppDetailView: View {
                     .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 3)
                     
                     VStack(alignment: .leading) {
-                        Text(groupCell.name ?? "Unknown")
+                        Text(item?.trackName ?? "Unknown")
                             .bold()
-                        Text(groupCell.artistName ?? "")
+                        Text(item?.artistName ?? "")
                             .font(.caption)
                         Spacer()
                         HStack {
                             Spacer()
                             Button("Open") {
-                                if let cellUrl = groupCell.url, let url = URL(string: cellUrl), UIApplication.shared.canOpenURL(url) {
+                                if let cellUrl = item?.url, let url = URL(string: cellUrl), UIApplication.shared.canOpenURL(url) {
                                     UIApplication.shared.open(url)
                                 }
                             }
@@ -78,7 +58,7 @@ struct AppDetailView: View {
                 Text("Preview")
                     .bold()
                 
-                if let screenshotUrls = groupCell.screenshotUrls {
+                if let screenshotUrls = item?.screenshotUrls {
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(screenshotUrls, id: \.self) { screenshotUrl in
@@ -96,17 +76,16 @@ struct AppDetailView: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
+        .onAppear(perform: loadData)
     }
     
-    func loadData(appId: String) {
+    private func loadData() {
         Task {
             do {
-                try await Service.shared.fetchAppDetail(appId: appId) { app in
-                    self.screenshotUrls = app.results.first?.screenshotUrls
-                }
+                let item = try await Service.shared.fetchItemWithID(itemID: itemID)
+                self.item = item?.results.first
             } catch {
-                print("Failed to fetch app detail: \(error)")
-                return
+                print("Failed for processing data \(error.localizedDescription)")
             }
         }
     }

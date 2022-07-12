@@ -14,6 +14,7 @@ struct SearchResult: Decodable {
     struct Result: Decodable, Identifiable {
         var id: Int { trackId ?? UUID().hashValue }
         let trackId: Int?
+        let url: String?
         let trackViewUrl: String?
         let trackName: String?
         var averageUserRating: Float?

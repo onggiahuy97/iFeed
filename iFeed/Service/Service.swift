@@ -26,6 +26,13 @@ struct Service {
         return try await fetchGenericGroups(groupKind.generateUrls(country))
     }
     
+    func fetchItemWithID(itemID: String) async throws -> SearchResult? {
+        guard let url = URL(string: "https://itunes.apple.com/lookup?id=\(itemID)") else { return nil }
+        let data = try await URLSession.shared.data(from: url).0
+        let res = try JSONDecoder().decode(SearchResult.self, from: data)
+        return res
+    }
+    
     func fetchAppDetail(appId: String, completion: @escaping ((SearchResult) -> Void)) async throws {
         guard let url = URL(string: "https://itunes.apple.com/lookup?id=\(appId)") else { return }
         try await fetch(url: url, completion: completion)
@@ -39,7 +46,7 @@ struct Service {
         return tGroup
     }
     
-    private func fetch<T: Decodable>(url: URL, completion: @escaping (T) -> Void) async throws {
+    func fetch<T: Decodable>(url: URL, completion: @escaping (T) -> Void) async throws {
         let session = URLSession.shared
         let res = try await session.data(from: url)
         let jsonData = try JSONDecoder().decode(T.self, from: res.0)

@@ -41,7 +41,7 @@ struct CellView: View {
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $showDetailView) {
-            AppDetailView(groupCell: cell)
+            ItemDetailView(itemID: cell.id ?? "")
         }
     }
 }
