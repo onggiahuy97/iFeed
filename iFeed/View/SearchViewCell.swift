@@ -41,7 +41,7 @@ struct SearchCellView: View {
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $showDetailView) {
-            AppDetailView(searchCell: cell)
+//            AppDetailView(searchCell: cell)
         }
     }
 }

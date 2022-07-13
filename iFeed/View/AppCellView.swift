@@ -27,7 +27,9 @@ struct CellView: View {
                     image
                         .resizable()
                 } placeholder: {
-                    ProgressView()
+                    ZStack {
+                        ProgressView()
+                    }
                 }
                 .frame(width: 60, height: 60)
                 .scaledToFill()

@@ -52,15 +52,19 @@ struct ItemDetailView: View {
                     Spacer()
                 }
                 .frame(height: 80)
+                .padding()
                 
                 Divider()
-                
+        
                 Text("Preview")
                     .bold()
+                    .padding(.horizontal)
                 
                 if let screenshotUrls = item?.screenshotUrls {
-                    ScrollView(.horizontal) {
+                    ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
+                            Spacer()
+                                .frame(width: 15)
                             ForEach(screenshotUrls, id: \.self) { screenshotUrl in
                                 AsyncImage(url: URL(string: screenshotUrl)) { image in
                                     image
@@ -68,13 +72,18 @@ struct ItemDetailView: View {
                                 } placeholder: {
                                     ProgressView()
                                 }
+                                .frame(width: 80, height: 150)
+                                .cornerRadius(5)
+                                .shadow(radius: 3)
                             }
                         }
+                    }
+                    .onTapGesture {
+                        print("Show bigger image")
                     }
                 }
             }
         }
-        .padding()
         .frame(maxWidth: .infinity)
         .onAppear(perform: loadData)
     }

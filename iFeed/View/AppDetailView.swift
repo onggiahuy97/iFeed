@@ -8,32 +8,10 @@
 import SwiftUI
 
 struct AppDetailView: View {
-    var searchCell: SearchResult.Result?
-    var groupCell: Group.FeedResult?
-    
-    @State private var screenshotUrls: [String]?
-    
-    init(searchCell: SearchResult.Result? = nil, groupCell: Group.FeedResult? = nil, screenshotUrls: [String]? = nil) {
-        self.searchCell = searchCell
-        self.groupCell = groupCell
-        self.screenshotUrls = screenshotUrls
-        
-        if let groupCell = groupCell {
-            loadData(appId: groupCell.id ?? "")
-        }
-    }
+    var groupCell: Group.FeedResult
     
     var body: some View {
-        if let groupCell = groupCell {
-            appDetailView(groupCell: groupCell)
-            .onAppear {
-                loadData(appId: groupCell.id ?? "")
-            }
-        } else if let searchCell = searchCell {
-            
-        } else {
-            ProgressView("Failed to fetch app")
-        }
+        appDetailView(groupCell: groupCell)
     }
     
     func appDetailView(groupCell: Group.FeedResult) -> some View {
@@ -96,18 +74,5 @@ struct AppDetailView: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-    }
-    
-    func loadData(appId: String) {
-        Task {
-            do {
-                try await Service.shared.fetchAppDetail(appId: appId) { app in
-                    self.screenshotUrls = app.results.first?.screenshotUrls
-                }
-            } catch {
-                print("Failed to fetch app detail: \(error)")
-                return
-            }
-        }
     }
 }
