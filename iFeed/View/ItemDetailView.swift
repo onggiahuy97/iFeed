@@ -11,6 +11,7 @@ struct ItemDetailView: View {
     let itemID: String
     
     @State private var item: SearchResult.Result?
+    @State private var showAllImages = false
     
     init(itemID: String) {
         self.itemID = itemID
@@ -79,13 +80,29 @@ struct ItemDetailView: View {
                         }
                     }
                     .onTapGesture {
-                        print("Show bigger image")
+                        if !screenshotUrls.isEmpty {
+                            showAllImages.toggle()
+                        }
+                    }
+                    .sheet(isPresented: $showAllImages) {
+                        showAllImages(screenshotUrls)
                     }
                 }
             }
         }
         .frame(maxWidth: .infinity)
         .onAppear(perform: loadData)
+    }
+    
+    @ViewBuilder
+    private func showAllImages(_ urls: [String]) -> some View {
+        TabView {
+            ForEach(urls, id: \.self) { url in
+                AsyncImage(url: URL(string: url))
+                    .scaledToFill()
+            }
+        }
+        .tabViewStyle(.page(indexDisplayMode: .always))
     }
     
     private func loadData() {
