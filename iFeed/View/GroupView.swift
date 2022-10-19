@@ -55,14 +55,7 @@ struct GroupView: View {
                         }
                     }
                 }
-                .frame(height: 220)
-                .overlay(
-                    ZStack {
-                        if group.feed.results.isEmpty {
-                            Text("The list is empty")
-                        }
-                    }
-                )
+                .frame(height: group.feed.results.isEmpty ? 0 : 220)
             }
         }
     }

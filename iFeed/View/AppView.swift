@@ -11,7 +11,7 @@ struct AppView: View {
     
     @EnvironmentObject var viewModel: ViewModel
     
-    @Environment(\.dismiss) private var dismiss
+//    @Environment(\.dismiss) private var dismiss
     
     @State private var searchText = ""
     @State private var showPickingCountry = false
@@ -65,7 +65,7 @@ struct AppView: View {
             List(CountryCode.all) { cc in
                 Button {
                     viewModel.selectedContry = cc
-                    dismiss()
+                    showPickingCountry.toggle()
                 } label: {
                     HStack {
                         Text(cc.flag)
@@ -83,10 +83,12 @@ struct AppView: View {
                 }
             }
             .searchable(text: $searchText) {
-                ForEach(CountryCode.all.filter { $0.country.contains(searchText) }) { cc in
+                ForEach(CountryCode.all.filter {
+                    $0.country.lowercased().contains(searchText.lowercased()) })
+                { cc in
                     Button {
                         viewModel.selectedContry = cc
-                        dismiss()
+                        showPickingCountry.toggle()
                     } label: {
                         HStack {
                             Text("\(cc.flag) \(cc.country)")

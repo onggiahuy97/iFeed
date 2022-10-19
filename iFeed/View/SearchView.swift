@@ -23,7 +23,6 @@ struct SearchView: View {
                             ForEach(searchResult.results) { result in
                                 SearchCellView(cell: result)
                             }
-                            
                         }
                     }
                 } else {
