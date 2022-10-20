@@ -27,6 +27,7 @@ class ViewModel: ObservableObject {
             self.groups = []
             self.isShowingError = false
         }
+        
         Task {
             do {
                 let apps = try await Service.shared.fetchGroup(country: selectedContry, groupKind: .app)
@@ -46,22 +47,6 @@ class ViewModel: ObservableObject {
                 }
             }
         }
-        //        Task {
-        //            async let apps = Service.shared.fetchGroup(country: selectedContry, groupKind: .app)
-        //            async let music = Service.shared.fetchGroup(country: selectedContry, groupKind: .music)
-        //            async let books = Service.shared.fetchGroup(country: selectedContry, groupKind: .book)
-        //            async let audibles = Service.shared.fetchGroup(country: selectedContry, groupKind: .audible)
-        //            async let podcasts = Service.shared.fetchGroup(country: selectedContry, groupKind: .podcast)
-        //            do {
-        //                try await groups.append(contentsOf: apps + music + books + audibles + podcasts)
-        //            } catch {
-        //                print(error.localizedDescription)
-        //                DispatchQueue.main.async {
-        //                    self.isShowingError = true
-        //                }
-        //            }
-        //        }
-
     }
     
     func addGroupInMainThread(_ group: [Group]) {

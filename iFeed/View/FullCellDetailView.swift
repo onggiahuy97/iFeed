@@ -19,16 +19,11 @@ struct FullCellDetailView: View {
                 Text("The list is empty")
             }
             
-//            VStack(alignment: .leading, spacing: 15) {
-//                ForEach(group.feed.results) { res in
-//                    CellView(cell: res)
-//                }
             let columns = Array(repeating: GridItem(), count: countColumns)
             LazyVGrid(columns: columns) {
                 ForEach(group.feed.results) { res in
                     CellView(cell: res)
                 }
-                //                }
             }
             .padding(.horizontal)
             
